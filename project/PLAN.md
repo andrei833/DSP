@@ -1,0 +1,52 @@
+## Plan: Modular AM/FM DSP Pipeline with Synthetic Demonstrations and Real IQ Validation
+
+Build a modular Python DSP pipeline (NumPy/SciPy/Matplotlib only) split into
+data_tools, modulation, signal, and analysis modules. Use synthetic baseband
+signals for clean modulation demonstrations and real IQ recordings for
+validation of demodulation, filtering, and noise robustness.
+
+- [ ] Confirm datasets and licensing: primary FM = SDRangel broadcast FM IQ
+      (bfm.zip); primary AM = KiwiSDR live IQ via kiwirecorder.py; AM spectrum
+      via KiwiSDR API snapshots; optional benchmark = RadioML (synthetic, CC
+      BY-NC-SA 4.0) only for labeled SNR/modulation tests.
+- [x] Data module: loaders for KiwiSDR WAV IQ, KiwiSDR spectrum snapshots,
+      SDRangel IQ WAV, and optional RadioML pickle/HDF5; normalization; metadata
+      parsing; unified IQ sample interface.
+- [x] Visualization module: time-domain I/Q, magnitude/phase, FFT spectrum with
+      selectable windows (rect, Hann, Hamming).
+- [x] Channel selection module: frequency shift to target station,
+      bandpass/lowpass channel filter, then decimation prior to demodulation.
+- [x] Decimation/resampling module: explicit rational resampler or FFT-based
+      decimation with anti-alias filtering.
+- [x] Modulation module (synthetic): create m(t) baseband signals; implement AM
+      and FM modulation explicitly for demonstration plots.
+- [x] AM demodulation module (real IQ): envelope detection for broadcast AM
+      (magnitude + DC removal + LPF); optional coherent/synchronous demod for
+      synthetic demos.
+- [x] FM demodulation module (real IQ): phase discriminator angle(x[n] _
+      x_[n-1]), then LPF, decimation, de-emphasis (50 us option) to audio.
+- [x] Noise/impairments module: add AWGN and channel effects; use dataset SNR
+      labels when available.
+- [x] Concepts demos: Nyquist/aliasing, spectral copies, Gibbs, leakage vs.
+      windowing, lowpass in frequency domain.
+- [x] Evaluation: compute SNR before/after, spectral comparisons, and export
+      figures for report/slides.
+- [x] Script structure: clean modular functions with math-focused docstrings;
+      single main script to reproduce all plots and figures.
+
+**Decisions**
+
+- Use only NumPy, SciPy, Matplotlib (no black-box SDR libs).
+- Separate synthetic modulation demos from real-data demodulation to keep
+  explanations clear.
+- RadioML is optional and not the main real-data source due to its synthetic
+  nature and CC BY-NC-SA 4.0 license.
+
+**Verification**
+
+- Validate IQ ingest by plotting spectra and confirming expected
+  bandwidth/structure.
+- Confirm AM and FM demod recover baseband signals on synthetic and real data
+  when possible.
+- Demonstrate windowing tradeoffs and aliasing with clear plots and captions.
+- Reproduce key figures consistently via a single script entry point.
