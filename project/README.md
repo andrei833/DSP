@@ -75,10 +75,10 @@ python scripts/main_demo.py --demo kiwi-am --path /path/to/kiwi_iq.wav --sample-
 python scripts/main_demo.py --demo sdrangel-fm --path /path/to/sdrangel_iq.wav --sample-rate 4000000 --center-hz 0 --bandwidth-hz 200000
 ```
 
-## Data Sources (Planned)
+## Data Sources
 
-- AM live IQ: KiwiSDR via kiwirecorder.py
-- FM real IQ: SDRangel broadcast FM IQ (bfm.zip)
+- AM live IQ: KiwiSDR via kiwirecorder.py (`data/am_153khz.wav`)
+- FM real IQ: SDRangel broadcast FM IQ (`data/bfm.zip`) — 294MB, 4000k sample rate, 16-bit WAV
 - Optional labeled benchmark: RadioML 2016.10A
 
 ## Status

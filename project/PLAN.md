@@ -5,7 +5,7 @@ data_tools, modulation, signal, and analysis modules. Use synthetic baseband
 signals for clean modulation demonstrations and real IQ recordings for
 validation of demodulation, filtering, and noise robustness.
 
-- [ ] Confirm datasets and licensing: primary FM = SDRangel broadcast FM IQ
+- [x] Confirm datasets and licensing: primary FM = SDRangel broadcast FM IQ
       (bfm.zip); primary AM = KiwiSDR live IQ via kiwirecorder.py; AM spectrum
       via KiwiSDR API snapshots; optional benchmark = RadioML (synthetic, CC
       BY-NC-SA 4.0) only for labeled SNR/modulation tests.
@@ -50,3 +50,31 @@ validation of demodulation, filtering, and noise robustness.
   when possible.
 - Demonstrate windowing tradeoffs and aliasing with clear plots and captions.
 - Reproduce key figures consistently via a single script entry point.
+
+---
+
+## Plan: Automatic Modulation Classification (AI Extension)
+
+SVM classifier in `notebooks/classification_panoradio.ipynb`. No separate module files.
+
+### Panoradio HF (`notebooks/classification_panoradio.ipynb`)
+
+- [x] Downloaded Panoradio HF dataset: 18 HF signal classes, 9600 samples
+      each, 2048 IQ samples/frame at 6 kHz, Watterson fading channel model.
+      Stored at `data/dataset_panoradio_hf.npy` + `dataset_panoradio_hf_tags.csv`.
+- [x] Same 8-feature SVM pipeline as RadioML notebook.
+- [x] SVM trained: **66.7% test accuracy** on 18 classes (random = 5.6%,
+      12× above chance).
+- [x] Per-class highlights: MT63 96%, Morse 86.6%, USB 83.7%, AM 80.4%.
+- [x] Real-world validation: KiwiSDR 153 kHz AM recording → **26/29 frames
+      predict `am` (89.7%)** — validation works due to shared HF channel model.
+
+**Decisions**
+
+- SVM with RBF kernel, scikit-learn only — no deep learning frameworks.
+- 8 features: amp variance/kurtosis, phase variance, freq variance/kurtosis,
+  spectral symmetry, peak ratio, spectral entropy.
+**Verification**
+
+- 66.7% test accuracy on 18 classes, interactive 3D feature space, per-class bars.
+- KiwiSDR AM validation: 89.7% frames predict `am`.
